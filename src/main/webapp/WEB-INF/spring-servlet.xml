@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	 xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+       
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                ">
+
+<!-- if you want take all request on /* -->
+<!-- http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/htmlsingle/spring-framework-reference.html#mvc-default-servlet-handler -->
+<mvc:default-servlet-handler />
+ 		
+<context:component-scan base-package="org.wp.issue18" />
+<mvc:annotation-driven  />
+<bean id="sessUser" class="org.wp.issue18.User" scope="session" >
+      <aop:scoped-proxy proxy-target-class="true" />
+</bean>
+	<!-- настройка шаблонов -->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/freemarker/"/> <!-- путь к шаблонам-->
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+    <!-- перехватчик методов контроллеров для нахождение и рендинга шаблона-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="suffix" value=".ftl"/>
+        <property name="requestContextAttribute" value="request"/>
+    </bean>
+
+
+</beans>
